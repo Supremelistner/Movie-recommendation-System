@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Movie Recommender</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-900 text-white min-h-screen flex flex-col items-center p-6">
+
+  <div class="w-full max-w-2xl mt-10 text-center">
+    <h1 class="text-4xl font-bold mb-6">Movie Recommender</h1>
+    <form method="POST" class="flex flex-col sm:flex-row gap-2">
+      <input
+        type="text"
+        name="prompt"
+        placeholder="Enter a movie description..."
+        class="flex-1 px-4 py-2 rounded-lg text-black"
+        required
+      >
+      <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 px-6 py-2 rounded-lg text-white">
+        Search
+      </button>
+    </form>
+  </div>
+
+  {% if results %}
+  <div class="w-full max-w-4xl mt-10 space-y-6">
+    {% for movie in results %}
+    <div class="bg-gray-800 rounded-xl p-4 shadow-lg flex flex-col md:flex-row gap-4">
+      <div class="flex-shrink-0 w-full md:w-40">
+        <img src="{{ movie['Image URL'] }}"
+             alt="Poster"
+             class="rounded-lg w-full object-cover">
+      </div>
+      <div>
+        <a href="{{ movie['Wikipedia Link'] }}"
+           target="_blank"
+           class="text-2xl font-bold text-indigo-400 hover:underline">
+          {{ movie['Movie name'] }}
+        </a>
+        <span class="text-sm text-gray-400">({{ movie['Movie release date'] }})</span>
+        <p class="text-gray-300 mt-2">
+          {{ movie['PlotSummary'][:500] }}{% if movie['PlotSummary']|length > 500 %}...{% endif %}
+        </p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+</body>
+</html>
